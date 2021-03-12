@@ -57,17 +57,19 @@ $mail = new PHPMailer(true);
 
 try {
     //Server settings
-    $mail->SMTPDebug = false;                                 // Enable verbose debug output
+    $mail->SMTPDebug = SMTP::DEBUG_OFF;                                  // Enable verbose debug output
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'webcompleto2@gmail.com';                 // SMTP username
-    $mail->Password = '!@#$4321';                           // SMTP password
-    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    // Alterar para o e-mail
+    $mail->Username = 'yourgmail@gmail.com';                 // SMTP username
+    $mail->Password = 'yourpassword';                           // SMTP password
+    // $mail->SMTPSecure = 'tls'; 
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;                                    // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('webcompleto2@gmail.com', 'Web Completo Remente');
+    $mail->setFrom('yourgmail');
     $mail->addAddress($mensagem->__get('para'));     // Add a recipient
     //$mail->addReplyTo('info@example.com', 'Information');
     //$mail->addCC('cc@example.com');
@@ -92,7 +94,7 @@ try {
     $mensagem->status['codigo_status'] = 2;
     $mensagem->status['descricao_status'] = 'Não foi possível enviar este e-mail! Por favor tente novamente mais tarde. Detalhes do erro: ' . $mail->ErrorInfo;
 
-    //alguma lógica que armazene o erro para posterior análise por parte do programador
+    //Alguma lógica que armazene o erro para posterior análise por parte do programador
 }
 ?>
 
@@ -112,7 +114,7 @@ try {
         <h2>Send Mail</h2>
         <p class="lead">Seu app de envio de e-mails particular!</p>
     </div>
-    <div class="row">
+    <div class="row d-flex justify-content-center">
         <div class="col-mid-12">
             <? if ($mensagem->status['codigo_status'] == 1) { ?>
                 <div class="container">
@@ -122,7 +124,7 @@ try {
                 </div>
             <? } ?>
 
-            <? if ($mensagem->status['codigo_status'] == 1) { ?>
+            <? if ($mensagem->status['codigo_status'] == 2) { ?>
                 <div class="container">
                     <h1 class="display-4 text-danger">Oops!</h1>
                     <p><?= $mensagem->status['descricao_status'] ?></p>
